@@ -44,6 +44,7 @@ public class CYTabLayout<T> extends HorizontalScrollView {
 
 
     private TabAdapter<T> tabAdapter;
+    private static OnTabUpdatedListener onTabUpdatedListener;
     //???????????????????????????????????????????????????????????????????????????
 
     public CYTabLayout(Context context) {
@@ -113,10 +114,10 @@ public class CYTabLayout<T> extends HorizontalScrollView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (linearLayout.getChildCount()==0)return;
+        if (linearLayout.getChildCount() == 0) return;
         if (!haveIndicator) return;
 
-        View view_current =  linearLayout.getChildAt(currentItem);
+        View view_current = linearLayout.getChildAt(currentItem);
 
 
         int left_indicator = view_current.getLeft() + view_current.getPaddingLeft();
@@ -187,7 +188,7 @@ public class CYTabLayout<T> extends HorizontalScrollView {
     public void setCurrentItem(int currentItem) {
         this.currentItem = currentItem;
 
-        if(tabAdapter==null)return;
+        if (tabAdapter == null) return;
 
         tabAdapter.onTabUnSelected(new ViewHolder(
                         linearLayout.getChildAt(position_selected_last)), position_selected_last,
@@ -202,6 +203,18 @@ public class CYTabLayout<T> extends HorizontalScrollView {
 
     public void setAdapter(final CYTabLayout.TabAdapter<T> tabAdapter) {
         this.tabAdapter = tabAdapter;
+        onTabUpdatedListener=new OnTabUpdatedListener() {
+            @Override
+            public void onTabUpdated() {
+                updateView();
+
+            }
+        };
+        updateView();
+
+    }
+
+    private  void updateView() {
         /** 每一个Tab的布局参数 */
         LinearLayout.LayoutParams layoutParams = tabMode == 0 ?
                 new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1.0f) :
@@ -209,20 +222,19 @@ public class CYTabLayout<T> extends HorizontalScrollView {
 
         linearLayout.removeAllViews();
 
-        currentItem =0;
-        position_selected_last=0;
+        currentItem = 0;
+        position_selected_last = 0;
 
         int size = tabAdapter.getCount();
-        if (size==0)return;
+        if (size == 0) return;
         for (int i = 0; i < size; i++) {
             View view = tabAdapter.getView(i);
             linearLayout.addView(view, layoutParams);
 
-            if (i==currentItem){
+            if (i == currentItem) {
 
                 tabAdapter.onTabSelected(new ViewHolder(view), currentItem, tabAdapter.getList_bean().get(currentItem));
             }
-
 
 
             view.setOnClickListener(new OnClickListener() {
@@ -239,7 +251,7 @@ public class CYTabLayout<T> extends HorizontalScrollView {
                         return;
                     }
                     tabAdapter.onTabUnSelected(new ViewHolder(
-                            linearLayout.getChildAt(position_selected_last)), position_selected_last,
+                                    linearLayout.getChildAt(position_selected_last)), position_selected_last,
                             tabAdapter.getList_bean().get(position_selected_last));
 
 
@@ -263,7 +275,6 @@ public class CYTabLayout<T> extends HorizontalScrollView {
 
             });
         }
-
     }
 
     /**
@@ -288,9 +299,6 @@ public class CYTabLayout<T> extends HorizontalScrollView {
 
         }
 
-        public List<T> getList_bean() {
-            return list_bean;
-        }
 
         //填充数据
         public abstract void bindDataToView(ViewHolder holder, int position, T bean);
@@ -310,6 +318,77 @@ public class CYTabLayout<T> extends HorizontalScrollView {
 
         public int getCount() {
             return list_bean.size();
+        }
+
+        public void notifyDataSetChanged() {
+
+            if (onTabUpdatedListener!=null){
+                onTabUpdatedListener.onTabUpdated();
+            }
+
+        }
+
+        //???????????????????????????????????????????????????????????????????
+        public List<T> getList_bean() {
+            return list_bean;
+        }
+
+        //更换List,并且notifyDataSetChanged
+
+        public void setList_bean(List<T> list_bean) {
+            this.list_bean = list_bean;
+            notifyDataSetChanged();
+        }
+
+
+        //??????????????????????????????????????????????????????????????????????????
+
+        //以下方法是操作数据项的
+
+        //删除相应position的数据Item ,并且notifyDataSetChanged
+        public void remove(int position) {
+            list_bean.remove(position);
+            notifyDataSetChanged();
+        }
+
+
+        //添加一条数据item,并且notifyDataSetChanged
+        public void add(T bean) {
+            list_bean.add(bean);
+            notifyDataSetChanged();
+        }
+
+        public void addToHead(T bean) {
+            list_bean.add(0, bean);
+            notifyDataSetChanged();
+        }
+        //添加List,并且notifyDataSetChanged
+
+        public void addAll(List<T> beans) {
+            list_bean.addAll(beans);
+
+            notifyDataSetChanged();
+        }
+
+        //先清空后添加List,并且notifyDataSetChanged
+
+        public void clearAddAll(List<T> beans) {
+            list_bean.clear();
+            list_bean.addAll(beans);
+            notifyDataSetChanged();
+
+        }
+        //添加List到position 0,并且notifyDataSetChanged
+
+        public void addAllToHead(List<T> beans) {
+            list_bean.addAll(0, beans);
+            notifyDataSetChanged();
+        }
+        //清空list,并且notifyDataSetChanged
+
+        public void clear() {
+            list_bean.clear();
+            notifyDataSetChanged();
         }
     }
 
@@ -394,6 +473,7 @@ public class CYTabLayout<T> extends HorizontalScrollView {
             View view = getView(v_id);
             view.setBackgroundResource(resid);
         }
+
         public void setBackgroundColor(int v_id, int color) {
             View view = getView(v_id);
             view.setBackgroundColor(color);
@@ -410,6 +490,10 @@ public class CYTabLayout<T> extends HorizontalScrollView {
         }
 
 
+    }
+    //??????????????????????????????????????????????????
+    private interface  OnTabUpdatedListener{
+        public void onTabUpdated();
     }
 
 

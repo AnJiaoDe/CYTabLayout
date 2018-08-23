@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textColor="#333333"
+        android:layout_height="26dp"
+        android:paddingLeft="17dp"
+        android:textSize="13sp"
+        android:paddingRight="17dp"
+        android:id="@+id/tv"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:background="#fff6f6f7"/>
+</RelativeLayout>

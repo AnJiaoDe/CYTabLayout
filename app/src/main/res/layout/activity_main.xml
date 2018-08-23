@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33454545"
+    android:orientation="vertical">
+
+    <com.cy.tablayout.CYTabLayout
+
+        android:id="@+id/cytab"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/colorAccent"
+        app:cornerRadius_indicator="5"
+        app:height_indicator="3dp"
+        app:width_indicator="30dp"></com.cy.tablayout.CYTabLayout>
+
+    <com.cy.tablayout.CYTabLayout
+
+        android:id="@+id/cytab2"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="40dp"
+        android:background="#ffffff"
+        app:cornerRadius_indicator="5"
+        app:height_indicator="3dp"
+        app:width_indicator="30dp"></com.cy.tablayout.CYTabLayout>
+
+</LinearLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CYTabLayout">
+        <attr name="width_indicator" format="dimension"/>
+        <attr name="height_indicator" format="dimension"/>
+        <attr name="cornerRadius_indicator" format="float"/>
+    </declare-styleable>
+
+</resources>

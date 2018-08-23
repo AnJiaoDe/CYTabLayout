@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(CYTabLayout.ViewHolder holder, int position, String bean) {
+                remove(position);
 
                 ToastUtils.showToast(MainActivity.this,"再次选中"+position);
 
